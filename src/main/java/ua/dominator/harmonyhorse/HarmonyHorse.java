@@ -1,6 +1,7 @@
 package ua.dominator.harmonyhorse;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -13,21 +14,23 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import ua.dominator.harmonyhorse.entity.ModEntities;
+import ua.dominator.harmonyhorse.entity.client.DefaultOreHorseRenderer;
 
 @Mod(HarmonyHorse.MODID)
 public class HarmonyHorse {
 
     public static final String MODID = "harmonyhorse";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
 
     public HarmonyHorse() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModEntities.register(modEventBus);
+
         modEventBus.addListener(this::commonSetup);
-
         MinecraftForge.EVENT_BUS.register(this);
-
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -45,6 +48,7 @@ public class HarmonyHorse {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(ModEntities.DEFAULT_ORE_HORSE.get(), DefaultOreHorseRenderer::new);
         }
     }
 }
