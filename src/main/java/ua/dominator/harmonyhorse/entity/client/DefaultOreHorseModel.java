@@ -11,7 +11,8 @@ import ua.dominator.harmonyhorse.entity.animations.OreHorseAnimationsDefinitions
 import ua.dominator.harmonyhorse.entity.horses.DefaultOreHorse;
 
 public class DefaultOreHorseModel<T extends Entity> extends HierarchicalModel<T> {
-    private final ModelPart Body;
+    private final ModelPart bodyAll;
+    private final ModelPart body;
     private final ModelPart tail;
     private final ModelPart legs;
     private final ModelPart legRL;
@@ -25,14 +26,15 @@ public class DefaultOreHorseModel<T extends Entity> extends HierarchicalModel<T>
     private final ModelPart earL;
 
     public DefaultOreHorseModel(ModelPart root) {
-        this.Body = root.getChild("Body");
-        this.tail = this.Body.getChild("tail");
-        this.legs = this.Body.getChild("legs");
+        this.bodyAll = root.getChild("bodyAll");
+        this.body = this.bodyAll.getChild("body");
+        this.tail = this.body.getChild("tail");
+        this.legs = this.body.getChild("legs");
         this.legRL = this.legs.getChild("legRL");
         this.legRR = this.legs.getChild("legRR");
         this.legFL = this.legs.getChild("legFL");
         this.legFR = this.legs.getChild("legFR");
-        this.neck = this.Body.getChild("neck");
+        this.neck = this.body.getChild("neck");
         this.head = this.neck.getChild("head");
         this.ears = this.head.getChild("ears");
         this.earR = this.ears.getChild("earR");
@@ -43,11 +45,13 @@ public class DefaultOreHorseModel<T extends Entity> extends HierarchicalModel<T>
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition Body = partdefinition.addOrReplaceChild("Body", CubeListBuilder.create().texOffs(0, 32).addBox(-5.0F, -8.0F, -20.0F, 10.0F, 10.0F, 22.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 11.0F, 9.0F));
+        PartDefinition bodyAll = partdefinition.addOrReplaceChild("bodyAll", CubeListBuilder.create(), PartPose.offset(0.0F, 12.0F, 9.0F));
 
-        PartDefinition tail = Body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(42, 36).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -7.0F, 2.0F, 0.5236F, 0.0F, 0.0F));
+        PartDefinition body = bodyAll.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 32).addBox(-5.0F, -9.0F, -20.0F, 10.0F, 10.0F, 22.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition legs = Body.addOrReplaceChild("legs", CubeListBuilder.create(), PartPose.offset(3.0F, 2.0F, 0.0F));
+        PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(42, 36).addBox(-1.5F, 0.0F, -2.0F, 3.0F, 14.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -8.0F, 2.0F, 0.5236F, 0.0F, 0.0F));
+
+        PartDefinition legs = body.addOrReplaceChild("legs", CubeListBuilder.create(), PartPose.offset(3.0F, 1.0F, 0.0F));
 
         PartDefinition legRL = legs.addOrReplaceChild("legRL", CubeListBuilder.create().texOffs(48, 21).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
 
@@ -57,8 +61,8 @@ public class DefaultOreHorseModel<T extends Entity> extends HierarchicalModel<T>
 
         PartDefinition legFR = legs.addOrReplaceChild("legFR", CubeListBuilder.create().texOffs(48, 21).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 11.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, 0.0F, -18.0F));
 
-        PartDefinition neck = Body.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(0, 35).addBox(-2.0F, -11.0F, -3.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(0.0F))
-                .texOffs(56, 36).addBox(-1.0F, -16.0F, 4.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -4.0F, -17.0F, 0.5236F, 0.0F, 0.0F));
+        PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(0, 35).addBox(-2.0F, -11.0F, -3.0F, 4.0F, 12.0F, 7.0F, new CubeDeformation(0.0F))
+                .texOffs(56, 36).addBox(-1.0F, -16.0F, 4.0F, 2.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -5.0F, -17.0F, 0.5236F, 0.0F, 0.0F));
 
         PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 13).addBox(-3.0F, -5.0F, -6.0F, 6.0F, 5.0F, 7.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 25).addBox(-2.0F, -5.0F, -11.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -11.0F, 3.0F, 0.0436F, 0.0F, 0.0F));
@@ -76,20 +80,20 @@ public class DefaultOreHorseModel<T extends Entity> extends HierarchicalModel<T>
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
 
-        this.animateWalk(OreHorseAnimationsDefinitions.WALKING, limbSwing, limbSwingAmount, 2f, 5f);
-//        this.animate(((DefaultOreHorse) entity).idleAnimationState, OreHorseAnimationsDefinitions.IDLE, ageInTicks, 10f);
-        this.animate(((DefaultOreHorse) entity).damagedAnimationState, OreHorseAnimationsDefinitions.DAMAGE, ageInTicks, 5f);
-//        this.animate(((DefaultOreHorse) entity).atackAnimationState, OreHorseAnimationsDefinitions.ATACK, ageInTicks, 10f);
-//        this.animate(((DefaultOreHorse) entity).poopAnimationState, OreHorseAnimationsDefinitions.POOP, ageInTicks, 10f);
+        this.animateWalk(OreHorseAnimationsDefinitions.WALKING, limbSwing, limbSwingAmount, 2f, 2f);
+        this.animate(((DefaultOreHorse) entity).idleAnimationState, OreHorseAnimationsDefinitions.IDLE, ageInTicks, 1f);
+        this.animate(((DefaultOreHorse) entity).damagedAnimationState, OreHorseAnimationsDefinitions.DAMAGE, ageInTicks, 1f);
+        this.animate(((DefaultOreHorse) entity).attackAnimationState, OreHorseAnimationsDefinitions.ATACK, ageInTicks, 1f);
+        this.animate(((DefaultOreHorse) entity).poopAnimationState, OreHorseAnimationsDefinitions.POOP, ageInTicks, 1f);
     }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        Body.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        bodyAll.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
     public ModelPart root() {
-        return Body;
+        return bodyAll;
     }
 }
