@@ -1,0 +1,23 @@
+
+buildDir = file("${rootDir}/build/server")
+
+dependencies {
+    compileOnly "net.luckperms:api:5.4"
+    implementation project(':shared')
+}
+
+jar {
+    into('META-INF') {
+        from {
+            def content = file("${rootProject.projectDir}/mods.toml").text.replaceAll(/\$\{(\w+)\}/) { full, key ->
+                if (key == 'SIDE') return 'SERVER'
+                return rootProject.properties[key] ?: full
+            }
+            project.resources.text.fromString(content)
+        }
+        rename { 'mods.toml' }
+    }
+
+    from project(':shared').sourceSets.main.output
+    archiveBaseName.set(archiveBaseName.get() + ' Server')
+}

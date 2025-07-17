@@ -1,0 +1,21 @@
+dependencies {
+    implementation project(':shared')
+}
+
+buildDir = file("${rootDir}/build/client")
+
+jar {
+    into('META-INF') {
+        from {
+            def content = file("${rootProject.projectDir}/mods.toml").text.replaceAll(/\$\{(\w+)\}/) { full, key ->
+                if (key == 'SIDE') return 'CLIENT'
+                return rootProject.properties[key] ?: full
+            }
+            project.resources.text.fromString(content)
+        }
+        rename { 'mods.toml' }
+    }
+
+    from project(':shared').sourceSets.main.output
+    archiveBaseName.set(archiveBaseName.get() + ' Client')
+}

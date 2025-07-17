@@ -1,0 +1,11 @@
+
+buildDir = file("${rootDir}/build/shared")
+
+java {
+    withSourcesJar()
+}
+
+jar {
+    destinationDirectory.set(file("$buildDir/build/libs"))
+    archiveBaseName.set(archiveBaseName.get() + ' Shared')
+}
