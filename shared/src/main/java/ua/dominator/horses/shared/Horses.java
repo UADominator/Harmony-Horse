@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 @Mod(Horses.MODID)
 public class Horses {
-    public static final String MODID = "template";
+    public static final String MODID = "horses";
     public static final Logger LOGGER = Logger.getLogger(MODID);
 
     public Horses(){

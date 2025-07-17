@@ -1,4 +1,4 @@
-package ua.dominator.horses.shared.entity.client;
+package ua.dominator.horses.client.render;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;

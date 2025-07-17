@@ -4,8 +4,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import ua.dominator.horses.shared.entity.ModEntities;
 import ua.dominator.horses.shared.entity.ai.HorseAttackGoal;
 
-public class DefaultOreHorse extends Animal{
+public class DefaultOreHorse extends Horse {
     private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(DefaultOreHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DAMAGED = SynchedEntityData.defineId(DefaultOreHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> POOP = SynchedEntityData.defineId(DefaultOreHorse.class, EntityDataSerializers.BOOLEAN);
@@ -46,11 +45,11 @@ public class DefaultOreHorse extends Animal{
     public int poopAnimationTimeout = 0;
 
 
-    public DefaultOreHorse(EntityType<? extends Animal> pEntityType, Level pLevel) {
+    public DefaultOreHorse(EntityType<? extends Horse> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    public void updatePoop(){
+    private void updatePoop(){
         poopTime++;
 
         if (poopTime + 10 == poopProduceTime){
@@ -97,16 +96,16 @@ public class DefaultOreHorse extends Animal{
         this.setDamaged(true);
     }
 
-    @Override
-    protected void updateWalkAnimation(float pPartialTicks) {
-        float f;
-        if (this.getPose() == Pose.STANDING){
-            f = Math.min(pPartialTicks * 6f, 1f);
-        } else {
-            f = 0;
-        }
-        this.walkAnimation.update(f, 0.2f);
-    }
+//    @Override
+//    protected void updateWalkAnimation(float pPartialTicks) {
+//        float f;
+//        if (this.getPose() == Pose.STANDING){
+//            f = Math.min(pPartialTicks * 6f, 1f);
+//        } else {
+//            f = 0;
+//        }
+//        this.walkAnimation.update(f, 0.2f);
+//    }
 
     private void setupLocals(){
         if (!this.level().isClientSide) {
@@ -203,15 +202,8 @@ public class DefaultOreHorse extends Animal{
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
+        super.registerGoals();
         this.goalSelector.addGoal(1, new HorseAttackGoal(this, 1.2f, true));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0f, DefaultOreHorse.class));
-        this.goalSelector.addGoal(2, new TemptGoal(this, 1.2f, Ingredient.of(Items.APPLE, Items.GOLDEN_CARROT), false));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0f));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.7f));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0f));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
@@ -229,23 +221,5 @@ public class DefaultOreHorse extends Animal{
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return ModEntities.DEFAULT_ORE_HORSE.get().create(serverLevel);
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.HORSE_AMBIENT;
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.HORSE_HURT;
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.HORSE_DEATH;
     }
 }
