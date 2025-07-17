@@ -1,6 +1,7 @@
 package ua.dominator.horses.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -26,5 +27,14 @@ public class DefaultOreHorseRenderer extends MobRenderer<DefaultOreHorse, Defaul
         }
 
         super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
+
+        this.model.setupAnim(pEntity, pEntityYaw, pEntity.getXRot(), pPartialTicks,
+                pEntity.getYHeadRot(), pEntity.getXRot());
+        ResourceLocation layerTexture = new ResourceLocation(Horses.MODID, "textures/entity/default_ore_horse.png");
+
+        VertexConsumer vertexConsumer = pBuffer.getBuffer(model.renderType(layerTexture));
+        this.model.renderToBuffer(pMatrixStack, vertexConsumer, pPackedLight,
+                getOverlayCoords(pEntity, 0.0f),
+                1.0f, 1.0f, 0.0f, 1.0f);
     }
 }

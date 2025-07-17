@@ -84,8 +84,7 @@ public class DefaultOreHorse extends Horse {
         this.setupLocals();
         if (this.level().isClientSide()){
             this.setupAnimationStates();
-
-            return; //Stop do any when client side
+            return;
         }
         updatePoop();
     }
@@ -95,17 +94,6 @@ public class DefaultOreHorse extends Horse {
         super.handleDamageEvent(damageSource);
         this.setDamaged(true);
     }
-
-//    @Override
-//    protected void updateWalkAnimation(float pPartialTicks) {
-//        float f;
-//        if (this.getPose() == Pose.STANDING){
-//            f = Math.min(pPartialTicks * 6f, 1f);
-//        } else {
-//            f = 0;
-//        }
-//        this.walkAnimation.update(f, 0.2f);
-//    }
 
     private void setupLocals(){
         if (!this.level().isClientSide) {
